@@ -69,8 +69,8 @@ class PaginateFirestore extends StatefulWidget {
 
   final Widget Function(Exception) onError;
 
-  final Widget Function(int, BuildContext, DocumentSnapshot, DocumentSnapshot,
-      DocumentSnapshot) itemBuilder;
+  final Widget Function(int, int, BuildContext, DocumentSnapshot,
+      DocumentSnapshot, DocumentSnapshot) itemBuilder;
 
   final void Function(PaginationLoaded) onReachedEnd;
 
@@ -169,6 +169,7 @@ class _PaginateFirestoreState extends State<PaginateFirestore> {
                 }
                 return widget.itemBuilder(
                     index,
+                    loadedState.documentSnapshots.length,
                     context,
                     loadedState.documentSnapshots[index],
                     index > 0 ? loadedState.documentSnapshots[index - 1] : null,
@@ -221,6 +222,7 @@ class _PaginateFirestoreState extends State<PaginateFirestore> {
                   }
                   return widget.itemBuilder(
                       itemIndex,
+                      loadedState.documentSnapshots.length,
                       context,
                       loadedState.documentSnapshots[itemIndex],
                       itemIndex > 0
