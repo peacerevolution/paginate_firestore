@@ -69,7 +69,8 @@ class PaginateFirestore extends StatefulWidget {
 
   final Widget Function(Exception) onError;
 
-  final Widget Function(int, BuildContext, DocumentSnapshot) itemBuilder;
+  final Widget Function(int, BuildContext, DocumentSnapshot, DocumentSnapshot,
+      DocumentSnapshot) itemBuilder;
 
   final void Function(PaginationLoaded) onReachedEnd;
 
@@ -167,7 +168,13 @@ class _PaginateFirestoreState extends State<PaginateFirestore> {
                   return widget.bottomLoader;
                 }
                 return widget.itemBuilder(
-                    index, context, loadedState.documentSnapshots[index]);
+                    index,
+                    context,
+                    loadedState.documentSnapshots[index],
+                    index > 0 ? loadedState.documentSnapshots[index - 1] : null,
+                    index < loadedState.documentSnapshots.length - 1
+                        ? loadedState.documentSnapshots[index + 1]
+                        : null);
               },
               childCount: loadedState.hasReachedEnd
                   ? loadedState.documentSnapshots.length
@@ -212,8 +219,16 @@ class _PaginateFirestoreState extends State<PaginateFirestore> {
                     _cubit.fetchPaginatedList();
                     return widget.bottomLoader;
                   }
-                  return widget.itemBuilder(itemIndex, context,
-                      loadedState.documentSnapshots[itemIndex]);
+                  return widget.itemBuilder(
+                      itemIndex,
+                      context,
+                      loadedState.documentSnapshots[itemIndex],
+                      itemIndex > 0
+                          ? loadedState.documentSnapshots[itemIndex - 1]
+                          : null,
+                      itemIndex < loadedState.documentSnapshots.length - 1
+                          ? loadedState.documentSnapshots[itemIndex + 1]
+                          : null);
                 }
                 return widget.separator;
               },
