@@ -38,7 +38,9 @@ class HomePage extends StatelessWidget {
         //item builder type is compulsory.
         itemBuilderType:
             PaginateBuilderType.listView, //Change types accordingly
-        itemBuilder: (index, context, documentSnapshot) => ListTile(
+        itemBuilder: (index, context, documentSnapshot, previousDocument,
+                nextDocument) =>
+            ListTile(
           leading: CircleAvatar(child: Icon(Icons.person)),
           title: Text(documentSnapshot.data()['name']),
           subtitle: Text(documentSnapshot.id),
