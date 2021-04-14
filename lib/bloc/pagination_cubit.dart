@@ -105,7 +105,7 @@ class PaginationCubit extends Cubit<PaginationState> {
 
   Query _getQuery() {
     var localQuery = (_lastDocument != null)
-        ? _query.startAfterDocument(_lastDocument)
+        ? _query.startAfterDocument(_lastDocument!)
         : _startAfterDocument != null
             ? _query.startAfterDocument(_startAfterDocument)
             : _query;
