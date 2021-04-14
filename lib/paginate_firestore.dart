@@ -17,10 +17,10 @@ import 'widgets/initial_loader.dart';
 
 class PaginateFirestore extends StatefulWidget {
   const PaginateFirestore({
-    Key key,
-    @required this.itemBuilder,
-    @required this.query,
-    @required this.itemBuilderType,
+    Key? key,
+    required this.itemBuilder,
+    required this.query,
+    required this.itemBuilderType,
     this.gridDelegate =
         const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
     this.startAfterDocument,
@@ -50,56 +50,56 @@ class PaginateFirestore extends StatefulWidget {
   final Widget initialLoader;
   final PaginateBuilderType itemBuilderType;
   final int itemsPerPage;
-  final List<ChangeNotifier> listeners;
+  final List<ChangeNotifier>? listeners;
   final EdgeInsets padding;
-  final ScrollPhysics physics;
+  final ScrollPhysics? physics;
   final Query query;
   final bool reverse;
-  final ScrollController scrollController;
+  final ScrollController? scrollController;
   final Axis scrollDirection;
   final Widget separator;
   final bool shrinkWrap;
   final bool isLive;
-  final DocumentSnapshot startAfterDocument;
-  final Widget header;
-  final Widget footer;
+  final DocumentSnapshot? startAfterDocument;
+  final Widget? header;
+  final Widget? footer;
 
   @override
   _PaginateFirestoreState createState() => _PaginateFirestoreState();
 
-  final Widget Function(Exception) onError;
+  final Widget Function(Exception)? onError;
 
   final Widget Function(int, int, BuildContext, DocumentSnapshot,
-      DocumentSnapshot, DocumentSnapshot) itemBuilder;
+      DocumentSnapshot?, DocumentSnapshot?) itemBuilder;
 
-  final void Function(PaginationLoaded) onReachedEnd;
+  final void Function(PaginationLoaded)? onReachedEnd;
 
-  final void Function(PaginationLoaded) onLoaded;
+  final void Function(PaginationLoaded)? onLoaded;
 }
 
 class _PaginateFirestoreState extends State<PaginateFirestore> {
-  PaginationCubit _cubit;
-  ScrollController _scrollController;
+  late PaginationCubit _cubit;
+  late ScrollController _scrollController;
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<PaginationCubit, PaginationState>(
-      cubit: _cubit,
+      bloc: _cubit,
       builder: (context, state) {
         if (state is PaginationInitial) {
           return widget.initialLoader;
         } else if (state is PaginationError) {
           return (widget.onError != null)
-              ? widget.onError(state.error)
+              ? widget.onError!(state.error)
               : ErrorDisplay(exception: state.error);
         } else {
           final loadedState = state as PaginationLoaded;
 
           if (widget.onLoaded != null) {
-            widget.onLoaded(loadedState);
+            widget.onLoaded!(loadedState);
           }
           if (loadedState.hasReachedEnd && widget.onReachedEnd != null) {
-            widget.onReachedEnd(loadedState);
+            widget.onReachedEnd!(loadedState);
           }
 
           if (loadedState.documentSnapshots.isEmpty) {
@@ -123,7 +123,7 @@ class _PaginateFirestoreState extends State<PaginateFirestore> {
   void initState() {
     _scrollController = widget.scrollController ?? ScrollController();
     if (widget.listeners != null) {
-      for (var listener in widget.listeners) {
+      for (var listener in widget.listeners!) {
         if (listener is PaginateRefreshedChangeListener) {
           listener.addListener(() {
             if (listener.refreshed) {
@@ -143,7 +143,7 @@ class _PaginateFirestoreState extends State<PaginateFirestore> {
     _cubit = PaginationCubit(
       widget.query,
       widget.itemsPerPage,
-      widget.startAfterDocument,
+      widget.startAfterDocument!,
       isLive: widget.isLive,
     )..fetchPaginatedList();
     super.initState();
@@ -187,9 +187,9 @@ class _PaginateFirestoreState extends State<PaginateFirestore> {
       ],
     );
 
-    if (widget.listeners != null && widget.listeners.isNotEmpty) {
+    if (widget.listeners != null && widget.listeners!.isNotEmpty) {
       return MultiProvider(
-        providers: widget.listeners
+        providers: widget.listeners!
             .map((_listener) => ChangeNotifierProvider(
                   create: (context) => _listener,
                 ))
@@ -255,9 +255,9 @@ class _PaginateFirestoreState extends State<PaginateFirestore> {
       ],
     );
 
-    if (widget.listeners != null && widget.listeners.isNotEmpty) {
+    if (widget.listeners != null && widget.listeners!.isNotEmpty) {
       return MultiProvider(
-        providers: widget.listeners
+        providers: widget.listeners!
             .map((_listener) => ChangeNotifierProvider(
                   create: (context) => _listener,
                 ))
