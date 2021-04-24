@@ -16,7 +16,7 @@ class PaginationCubit extends Cubit<PaginationState> {
   DocumentSnapshot? _lastDocument;
   final int _limit;
   final Query _query;
-  final DocumentSnapshot _startAfterDocument;
+  final DocumentSnapshot? _startAfterDocument;
   final bool isLive;
 
   void filterPaginatedList(String searchTerm) {
@@ -107,7 +107,7 @@ class PaginationCubit extends Cubit<PaginationState> {
     var localQuery = (_lastDocument != null)
         ? _query.startAfterDocument(_lastDocument!)
         : _startAfterDocument != null
-            ? _query.startAfterDocument(_startAfterDocument)
+            ? _query.startAfterDocument(_startAfterDocument!)
             : _query;
     localQuery = localQuery.limit(_limit);
     return localQuery;

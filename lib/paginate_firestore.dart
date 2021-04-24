@@ -143,7 +143,7 @@ class _PaginateFirestoreState extends State<PaginateFirestore> {
     _cubit = PaginationCubit(
       widget.query,
       widget.itemsPerPage,
-      widget.startAfterDocument!,
+      widget.startAfterDocument,
       isLive: widget.isLive,
     )..fetchPaginatedList();
     super.initState();
