@@ -43,11 +43,13 @@ class PaginationCubit extends Cubit<PaginationState> {
     final localQuery = _getQuery();
     if (isLive) {
       localQuery.snapshots().listen((querySnapshot) {
-        _emitPaginatedState(querySnapshot.docs);
+        _emitPaginatedState(
+            querySnapshot.docs as List<DocumentSnapshot<Map<String, dynamic>>>);
       });
     } else {
       final querySnapshot = await localQuery.get();
-      _emitPaginatedState(querySnapshot.docs);
+      _emitPaginatedState(
+          querySnapshot.docs as List<DocumentSnapshot<Map<String, dynamic>>>);
     }
   }
 
@@ -65,7 +67,7 @@ class PaginationCubit extends Cubit<PaginationState> {
         if (loadedState.hasReachedEnd) return;
         final querySnapshot = await localQuery.get();
         _emitPaginatedState(
-          querySnapshot.docs,
+          querySnapshot.docs as List<DocumentSnapshot<Map<String, dynamic>>>,
           previousList: loadedState.documentSnapshots,
         );
       }
@@ -84,7 +86,7 @@ class PaginationCubit extends Cubit<PaginationState> {
       if (loadedState.hasReachedEnd) return;
       localQuery.snapshots().listen((querySnapshot) {
         _emitPaginatedState(
-          querySnapshot.docs,
+          querySnapshot.docs as List<DocumentSnapshot<Map<String, dynamic>>>,
           previousList: loadedState.documentSnapshots,
         );
       });
@@ -92,8 +94,8 @@ class PaginationCubit extends Cubit<PaginationState> {
   }
 
   void _emitPaginatedState(
-    List<DocumentSnapshot> newList, {
-    List<DocumentSnapshot> previousList = const [],
+    List<DocumentSnapshot<Map<String, dynamic>>> newList, {
+    List<DocumentSnapshot<Map<String, dynamic>>> previousList = const [],
   }) {
     //print(newList.length);
     _lastDocument = newList.isNotEmpty ? newList.last : null;

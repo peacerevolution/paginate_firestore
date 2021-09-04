@@ -60,7 +60,7 @@ class PaginateFirestore extends StatefulWidget {
   final Widget separator;
   final bool shrinkWrap;
   final bool isLive;
-  final DocumentSnapshot? startAfterDocument;
+  final DocumentSnapshot<Map<String, dynamic>>? startAfterDocument;
   final Widget? header;
   final Widget? footer;
 
@@ -69,8 +69,13 @@ class PaginateFirestore extends StatefulWidget {
 
   final Widget Function(Exception)? onError;
 
-  final Widget Function(int, int, BuildContext, DocumentSnapshot,
-      DocumentSnapshot?, DocumentSnapshot?) itemBuilder;
+  final Widget Function(
+      int,
+      int,
+      BuildContext,
+      DocumentSnapshot<Map<String, dynamic>>,
+      DocumentSnapshot<Map<String, dynamic>>?,
+      DocumentSnapshot<Map<String, dynamic>>?) itemBuilder;
 
   final void Function(PaginationLoaded)? onReachedEnd;
 
