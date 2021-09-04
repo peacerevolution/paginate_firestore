@@ -42,7 +42,8 @@ class HomePage extends StatelessWidget {
                 previousDocument, nextDocument) =>
             ListTile(
           leading: CircleAvatar(child: Icon(Icons.person)),
-          title: Text(documentSnapshot.data()?['name']),
+          title:
+              Text((documentSnapshot.data() as Map<String, dynamic>)['name']),
           subtitle: Text(documentSnapshot.id),
         ),
         // orderBy is compulsory to enable pagination
